@@ -4,7 +4,7 @@ import random
 import math
 
 class GeneticAlgorythm:
-    def __init__(self, halfPopulationCount, roadLength, stopsCount, popularPlaces, mutationProbability = 0.05, iterationCount=100):
+    def __init__(self, halfPopulationCount, roadLength, stopsCount, popularPlaces, mutationProbability = 0.05, iterationCount=10000):
         self.m_PopulationCount = 2 * halfPopulationCount
         self.m_RoadLength = roadLength
         self.m_StopsCount = stopsCount
@@ -31,7 +31,8 @@ class GeneticAlgorythm:
         endCondition = 0
         while(endCondition<self.m_IterationCount):
             self.CalculateQuality()
-            self.DividePopulation()
+            # self.DividePopulation()
+            self.RouletteSelection()
             # self.PrintPopulation()
             self.CrossOver()
             self.Mutate()
@@ -52,7 +53,7 @@ class GeneticAlgorythm:
 
         return sum
 
-    def DividePopulation(self):
+    def RankSelection(self):
         x = lambda a: a.m_Quality
         self.m_Population.sort(key=x)
 
@@ -66,6 +67,26 @@ class GeneticAlgorythm:
         if self.m_Population[0].m_Quality < self.m_AlfaMale.m_Quality:
             self.m_AlfaMale.m_Chromosome = self.m_Population[0].m_Chromosome[:]
             self.m_AlfaMale.m_Quality= self.m_Population[0].m_Quality
+
+    def RouletteSelection(self):
+        goalFunctionSum = 0
+        for i in range(0, self.m_PopulationCount):
+            goalFunctionSum += self.m_Population[i].m_Quality
+        
+        for i in range(0, self.m_PopulationCount):
+            if random.random() < self.m_Population[i].m_Quality/goalFunctionSum:
+                self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability)
+                self.m_Population[i].CreateIndividual()
+                self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i].m_Chromosome)
+
+        x = lambda a: a.m_Quality
+        self.m_Population.sort(key=x)
+
+        if self.m_Population[0].m_Quality < self.m_AlfaMale.m_Quality:
+            self.m_AlfaMale.m_Chromosome = self.m_Population[0].m_Chromosome[:]
+            self.m_AlfaMale.m_Quality= self.m_Population[0].m_Quality
+
+
 
     def ShowAlfa(self):
         print(self.m_AlfaMale.m_Chromosome, self.m_AlfaMale.m_Quality)
