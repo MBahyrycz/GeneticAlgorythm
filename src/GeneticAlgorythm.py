@@ -4,7 +4,7 @@ import random
 import math
 
 class GeneticAlgorythm:
-    def __init__(self, halfPopulationCount, roadLength, stopsCount, popularPlaces, mutationProbability = 0.05, iterationCount=10000):
+    def __init__(self, halfPopulationCount, roadLength, stopsCount, popularPlaces, mutationProbability = 0.05, iterationCount=10000,minStopsDistance=3,maxStopsDistance=7):
         self.m_PopulationCount = 2 * halfPopulationCount
         self.m_RoadLength = roadLength
         self.m_StopsCount = stopsCount
@@ -12,12 +12,14 @@ class GeneticAlgorythm:
         self.m_Population = []
         self.m_IterationCount = iterationCount
         self.m_MutationProbability = mutationProbability
-        self.m_AlfaMale = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability)
+        self.minStopsDistance=minStopsDistance
+        self.maxStopsDistance=maxStopsDistance
+        self.m_AlfaMale = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.minStopsDistance,self.maxStopsDistance)
         self.m_AlfaMale.m_Quality = math.inf
 
     def ConstructPopulation(self):
         for _ in range(self.m_PopulationCount):
-            individual = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability)
+            individual = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.minStopsDistance,self.maxStopsDistance)
             individual.CreateIndividual()
             self.m_Population.append(individual)
 
@@ -58,7 +60,7 @@ class GeneticAlgorythm:
         self.m_Population.sort(key=x)
 
         for i in range(int(self.m_PopulationCount/2), self.m_PopulationCount):
-            self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability)
+            self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.minStopsDistance,self.maxStopsDistance)
             self.m_Population[i].CreateIndividual()
             self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i].m_Chromosome)
 
@@ -75,7 +77,7 @@ class GeneticAlgorythm:
         
         for i in range(0, self.m_PopulationCount):
             if random.random() < self.m_Population[i].m_Quality/goalFunctionSum:
-                self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability)
+                self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.minStopsDistance,self.maxStopsDistance)
                 self.m_Population[i].CreateIndividual()
                 self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i].m_Chromosome)
 
@@ -95,6 +97,8 @@ class GeneticAlgorythm:
         for i in range(0, self.m_PopulationCount, 2):
             crossover_index = random.randint(0,self.m_StopsCount - 2)
             self.m_Population[i].m_Chromosome[crossover_index:-1], self.m_Population[i+1].m_Chromosome[crossover_index:-1] = self.m_Population[i+1].m_Chromosome[crossover_index:-1], self.m_Population[i].m_Chromosome[crossover_index:-1]
+            self.m_Population[i].Repair()
+            self.m_Population[i+1].Repair()
 
     def Mutate(self):
         for i in range(self.m_PopulationCount):
