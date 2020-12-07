@@ -12,14 +12,14 @@ class GeneticAlgorythm:
         self.m_Population = []
         self.m_IterationCount = iterationCount
         self.m_MutationProbability = mutationProbability
-        self.minStopsDistance=minStopsDistance
-        self.maxStopsDistance=maxStopsDistance
-        self.m_AlfaMale = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.minStopsDistance,self.maxStopsDistance)
+        self.m_MinStopsDistance=minStopsDistance
+        self.m_MaxStopsDistance=maxStopsDistance
+        self.m_AlfaMale = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance)
         self.m_AlfaMale.m_Quality = math.inf
 
     def ConstructPopulation(self):
         for _ in range(self.m_PopulationCount):
-            individual = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.minStopsDistance,self.maxStopsDistance)
+            individual = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance)
             individual.CreateIndividual()
             self.m_Population.append(individual)
 
@@ -33,8 +33,9 @@ class GeneticAlgorythm:
         endCondition = 0
         while(endCondition<self.m_IterationCount):
             self.CalculateQuality()
-            # self.DividePopulation()
-            self.RouletteSelection()
+            self.RankSelection()
+            # self.RouletteSelection()
+            # self.TournamentSelection()
             # self.PrintPopulation()
             self.CrossOver()
             self.Mutate()
@@ -60,7 +61,7 @@ class GeneticAlgorythm:
         self.m_Population.sort(key=x)
 
         for i in range(int(self.m_PopulationCount/2), self.m_PopulationCount):
-            self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.minStopsDistance,self.maxStopsDistance)
+            self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance)
             self.m_Population[i].CreateIndividual()
             self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i].m_Chromosome)
 
@@ -77,7 +78,7 @@ class GeneticAlgorythm:
         
         for i in range(0, self.m_PopulationCount):
             if random.random() < self.m_Population[i].m_Quality/goalFunctionSum:
-                self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.minStopsDistance,self.maxStopsDistance)
+                self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance)
                 self.m_Population[i].CreateIndividual()
                 self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i].m_Chromosome)
 
@@ -88,6 +89,33 @@ class GeneticAlgorythm:
             self.m_AlfaMale.m_Chromosome = self.m_Population[0].m_Chromosome[:]
             self.m_AlfaMale.m_Quality= self.m_Population[0].m_Quality
 
+    def TournamentSelection(self):
+        usedStops = []
+        newPopulation = []
+        while len(usedStops) < self.m_PopulationCount:
+            firstChallanger = random.randint(0,self.m_PopulationCount - 1)
+            secondChallanger = random.randint(0,self.m_PopulationCount - 1)
+            if(firstChallanger not in usedStops and secondChallanger not in usedStops):
+                usedStops.append(firstChallanger)
+                usedStops.append(secondChallanger)
+                if self.m_Population[firstChallanger].m_Quality >= self.m_Population[secondChallanger].m_Quality:
+                    newPopulation.append(self.m_Population[firstChallanger])
+                else: 
+                    newPopulation.append(self.m_Population[secondChallanger])
+        
+        self.m_Population = newPopulation
+
+        for i in range(int(self.m_PopulationCount/2), self.m_PopulationCount):
+            self.m_Population.append(Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance))
+            self.m_Population[i].CreateIndividual()
+            self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i].m_Chromosome)
+
+        x = lambda a: a.m_Quality
+        self.m_Population.sort(key=x)
+
+        if self.m_Population[0].m_Quality < self.m_AlfaMale.m_Quality:
+            self.m_AlfaMale.m_Chromosome = self.m_Population[0].m_Chromosome[:]
+            self.m_AlfaMale.m_Quality= self.m_Population[0].m_Quality
 
 
     def ShowAlfa(self):
