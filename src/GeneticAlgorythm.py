@@ -34,6 +34,7 @@ class GeneticAlgorythm:
         while(endCondition<self.m_IterationCount):
             self.CalculateQuality()
             self.RankSelection()
+            self.RankSelectionDependentOnIteration(endCondition)
             # self.RouletteSelection()
             # self.TournamentSelection()
             # self.PrintPopulation()
@@ -61,6 +62,22 @@ class GeneticAlgorythm:
         self.m_Population.sort(key=x)
 
         for i in range(int(self.m_PopulationCount/2), self.m_PopulationCount):
+            self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance)
+            self.m_Population[i].CreateIndividual()
+            self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i].m_Chromosome)
+
+        self.m_Population.sort(key=x)
+
+        if self.m_Population[0].m_Quality < self.m_AlfaMale.m_Quality:
+            self.m_AlfaMale.m_Chromosome = self.m_Population[0].m_Chromosome[:]
+            self.m_AlfaMale.m_Quality= self.m_Population[0].m_Quality
+
+
+    def RankSelectionDependentOnIteration(self, currentIteration):
+        x = lambda a: a.m_Quality
+        self.m_Population.sort(key=x)
+
+        for i in range(int(currentIteration/self.m_IterationCount * self.m_PopulationCount), self.m_PopulationCount):
             self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance)
             self.m_Population[i].CreateIndividual()
             self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i].m_Chromosome)

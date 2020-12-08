@@ -28,7 +28,7 @@ class Individual:
             
     
     def StopsBorders(self,index):
-        leftBorder=0;
+        leftBorder=0
         rightBorder=self.m_RoadLength
         if index==0:
             leftBorder=max(self.m_minStopsDistance,self.m_Chromosome[1]-self.m_maxStopsDistance)
