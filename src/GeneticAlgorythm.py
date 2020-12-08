@@ -33,7 +33,7 @@ class GeneticAlgorythm:
         endCondition = 0
         while(endCondition<self.m_IterationCount):
             self.CalculateQuality()
-            self.RankSelection()
+            # self.RankSelection()
             self.RankSelectionDependentOnIteration(endCondition)
             # self.RouletteSelection()
             # self.TournamentSelection()
