@@ -4,7 +4,7 @@ import random
 import math
 
 class GeneticAlgorythm:
-    def __init__(self, halfPopulationCount, roadLength, stopsCount, popularPlaces, mutationProbability = 0.05, iterationCount=10000,minStopsDistance=3,maxStopsDistance=7):
+    def __init__(self, halfPopulationCount, roadLength, stopsCount, popularPlaces, mutationProbability = 0.05, iterationCount=10000,minStopsDistance=3,maxStopsDistance=7,bannedAreas=[]):
         self.m_PopulationCount = 2 * halfPopulationCount
         self.m_RoadLength = roadLength
         self.m_StopsCount = stopsCount
@@ -14,12 +14,13 @@ class GeneticAlgorythm:
         self.m_MutationProbability = mutationProbability
         self.m_MinStopsDistance=minStopsDistance
         self.m_MaxStopsDistance=maxStopsDistance
-        self.m_AlfaMale = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance)
+        self.m_bannedAreas=bannedAreas
+        self.m_AlfaMale = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance,self.m_bannedAreas)
         self.m_AlfaMale.m_Quality = math.inf
 
     def ConstructPopulation(self):
         for _ in range(self.m_PopulationCount):
-            individual = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance)
+            individual = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance,self.m_bannedAreas)
             individual.CreateIndividual()
             self.m_Population.append(individual)
 
@@ -62,7 +63,7 @@ class GeneticAlgorythm:
         self.m_Population.sort(key=x)
 
         for i in range(int(self.m_PopulationCount/2), self.m_PopulationCount):
-            self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance)
+            self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance,self.m_bannedAreas)
             self.m_Population[i].CreateIndividual()
             self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i].m_Chromosome)
 
@@ -78,7 +79,7 @@ class GeneticAlgorythm:
         self.m_Population.sort(key=x)
 
         for i in range(int(currentIteration/self.m_IterationCount * self.m_PopulationCount), self.m_PopulationCount):
-            self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance)
+            self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance,self.m_bannedAreas)
             self.m_Population[i].CreateIndividual()
             self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i].m_Chromosome)
 
@@ -95,7 +96,7 @@ class GeneticAlgorythm:
         
         for i in range(0, self.m_PopulationCount):
             if random.random() < self.m_Population[i].m_Quality/goalFunctionSum:
-                self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance)
+                self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance,self.m_bannedAreas)
                 self.m_Population[i].CreateIndividual()
                 self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i].m_Chromosome)
 
