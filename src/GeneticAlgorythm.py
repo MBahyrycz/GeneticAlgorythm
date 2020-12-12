@@ -1,7 +1,6 @@
 from src.Individual import *
 
 import random
-import math
 
 class GeneticAlgorythm:
     def __init__(self, halfPopulationCount, roadLength, stopsCount, popularPlaces, mutationProbability = 0.05, iterationCount=10000,minStopsDistance=3,maxStopsDistance=7,bannedAreas=[]):
@@ -46,9 +45,13 @@ class GeneticAlgorythm:
 
     def CalculateQuality(self):
         for i in range(self.m_PopulationCount):
-            self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i].m_Chromosome)
+            if self.m_Population[i]!=math.inf:
+                self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i])
 
-    def GoalFunction(self, chromosome):
+    def GoalFunction(self, individual):
+        if individual.m_Quality==math.inf:
+            return math.inf
+        chromosome=individual.m_Chromosome
         sum = 0
         index = 0
         for j in range(len(self.m_PopularPlaces)):
@@ -65,7 +68,7 @@ class GeneticAlgorythm:
         for i in range(int(self.m_PopulationCount/2), self.m_PopulationCount):
             self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance,self.m_bannedAreas)
             self.m_Population[i].CreateIndividual()
-            self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i].m_Chromosome)
+            self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i])
 
         self.m_Population.sort(key=x)
 
@@ -81,7 +84,7 @@ class GeneticAlgorythm:
         for i in range(int(currentIteration/self.m_IterationCount * self.m_PopulationCount), self.m_PopulationCount):
             self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance,self.m_bannedAreas)
             self.m_Population[i].CreateIndividual()
-            self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i].m_Chromosome)
+            self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i])
 
         self.m_Population.sort(key=x)
 
@@ -98,7 +101,7 @@ class GeneticAlgorythm:
             if random.random() < self.m_Population[i].m_Quality/goalFunctionSum:
                 self.m_Population[i] = Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance,self.m_bannedAreas)
                 self.m_Population[i].CreateIndividual()
-                self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i].m_Chromosome)
+                self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i])
 
         x = lambda a: a.m_Quality
         self.m_Population.sort(key=x)
@@ -126,7 +129,7 @@ class GeneticAlgorythm:
         for i in range(int(self.m_PopulationCount/2), self.m_PopulationCount):
             self.m_Population.append(Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance))
             self.m_Population[i].CreateIndividual()
-            self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i].m_Chromosome)
+            self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i])
 
         x = lambda a: a.m_Quality
         self.m_Population.sort(key=x)

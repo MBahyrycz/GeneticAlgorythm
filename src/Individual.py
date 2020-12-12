@@ -1,4 +1,6 @@
 import random
+import math
+
 
 class Individual:
     def __init__(self, stopsCount, roadLength, mutationProbability,minStopsDistance,maxStopsDistance,bannedAreas):
@@ -53,7 +55,13 @@ class Individual:
                     availibleAreas.append((self.m_bannedAreas[-1][1],rightBorder))
         #print(leftBorder,rightBorder,availibleAreas)
         if len(availibleAreas)==0:
-            raise ValueError("Cannot place stop between (%f,%f)"%(leftBorder,rightBorder))
+            self.m_Quality=math.inf
+            if index>=len(self.m_Chromosome):
+                self.m_Chromosome.append(random.random()*(rightBorder-leftBorder)+leftBorder)
+            else:
+                self.m_Chromosome[index]=random.random()*(rightBorder-leftBorder)+leftBorder
+            return
+            #raise ValueError("Cannot place stop between (%f,%f)"%(leftBorder,rightBorder))
         randArea=availibleAreas[random.randint(0,len(availibleAreas)-1)]
         if index>=len(self.m_Chromosome):
             self.m_Chromosome.append(random.random()*(randArea[1]-randArea[0])+randArea[0])
