@@ -1,8 +1,10 @@
 from src.GeneticAlgorythm import *
+from src.Plotter import *
 import time
 
 if __name__ == "__main__":
-    methods=['rks','rksi','rus','tus']
+    methods=["RankSelection", "RankSelectionDependentOnIteration", "RouletteSelection", "TournamentSelection"]
+    iterCount = 100
     for method in methods:
         print()
         print('Metoda : ',method)
@@ -12,14 +14,18 @@ if __name__ == "__main__":
         #popular = [1.0, 2.0, 2.14, 3.6, 11.23, 23.51, 17.2, 12.3, 19.2, 7.7]
         popular=[3,11,15,23]
         popular.sort()
-        alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(15,19)],iterationCount=10000)
-        start=time.time();
+        alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(15,19)],iterationCount=iterCount)
+        start=time.time()
         alfaMaleData,bestIndividuals=alg.Solve(method)
+        print(len(alfaMaleData))
+
+        plt = Plotter()
+        plt.DisplayGoalFunctionOfIteration(alfaMaleData, method)
         
-        print("zbiernosici funkcji celu")
-        print(alfaMaleData)#z tego ma byci wykres
-        print("najlepsze osobniki")
-        print(bestIndividuals)#z tego tesz
+        # print("zbiernosici funkcji celu")
+        # # print(alfaMaleData)#z tego ma byci wykres
+        # print("najlepsze osobniki")
+        # print(bestIndividuals)#z tego tesz
         
         alg.ShowAlfa()
         print("Czas obliczeń : ",time.time()-start)
@@ -33,7 +39,7 @@ if __name__ == "__main__":
         
         for m in mutate:
             alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=1000,mutationProbability=m)
-            start=time.time();
+            start=time.time()
             alfaMaleData=alg.Solve(method)
             print("Prawdopodobienistwo mutacji : ",m)
             alg.ShowAlfa()
@@ -47,7 +53,7 @@ if __name__ == "__main__":
         
         for hp in halfPop:
             alg = GeneticAlgorythm(hp, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=1000)
-            start=time.time();
+            start=time.time()
             alfaMaleData=alg.Solve(method)
             print("Populacja : ",2*hp)
             alg.ShowAlfa()

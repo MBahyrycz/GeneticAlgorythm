@@ -34,13 +34,13 @@ class GeneticAlgorythm:
         bestIndividuals=[]
         while(endCondition<self.m_IterationCount):
             self.CalculateQuality()
-            if method=='rks':
+            if method=="RankSelection":
                 self.RankSelection()
-            if method=='rksi':
+            if method=="RankSelectionDependentOnIteration":
                 self.RankSelectionDependentOnIteration(endCondition)
-            if method=='rus':
+            if method=="RouletteSelection":
                 self.RouletteSelection()
-            if method=='tus':
+            if method=="TournamentSelection":
                 self.TournamentSelection()
             # self.PrintPopulation()
             bestIndividuals.append(self.m_Population[0].m_Quality)
