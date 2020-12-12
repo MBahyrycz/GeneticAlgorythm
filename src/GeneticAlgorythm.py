@@ -1,5 +1,4 @@
 from src.Individual import *
-
 import random
 
 class GeneticAlgorythm:
@@ -28,20 +27,29 @@ class GeneticAlgorythm:
             print(self.m_Population[i].m_Chromosome, self.m_Population[i].m_Quality)
         print('\n')
 
-    def Solve(self):
+    def Solve(self,method='rksi'):
         self.ConstructPopulation()
         endCondition = 0
+        alfaMaleData=[]
+        bestIndividuals=[]
         while(endCondition<self.m_IterationCount):
             self.CalculateQuality()
-            # self.RankSelection()
-            self.RankSelectionDependentOnIteration(endCondition)
-            # self.RouletteSelection()
-            # self.TournamentSelection()
+            if method=='rks':
+                self.RankSelection()
+            if method=='rksi':
+                self.RankSelectionDependentOnIteration(endCondition)
+            if method=='rus':
+                self.RouletteSelection()
+            if method=='tus':
+                self.TournamentSelection()
             # self.PrintPopulation()
+            bestIndividuals.append(self.m_Population[0].m_Quality)
             self.CrossOver()
             self.Mutate()
             # self.PrintPopulation()
+            alfaMaleData.append(self.m_AlfaMale.m_Quality)
             endCondition+= 1
+        return alfaMaleData,bestIndividuals
 
     def CalculateQuality(self):
         for i in range(self.m_PopulationCount):
@@ -127,7 +135,7 @@ class GeneticAlgorythm:
         self.m_Population = newPopulation
 
         for i in range(int(self.m_PopulationCount/2), self.m_PopulationCount):
-            self.m_Population.append(Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance))
+            self.m_Population.append(Individual(self.m_StopsCount, self.m_RoadLength, self.m_MutationProbability,self.m_MinStopsDistance,self.m_MaxStopsDistance,self.m_bannedAreas))
             self.m_Population[i].CreateIndividual()
             self.m_Population[i].m_Quality = self.GoalFunction(self.m_Population[i])
 
