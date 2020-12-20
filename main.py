@@ -5,7 +5,7 @@ import numpy as np
 
 if __name__ == "__main__":
     methods=["RankSelection", "RankSelectionDependentOnIteration", "RouletteSelection", "TournamentSelection"]
-    iterCount = 1000
+    iterCount = 100000
     plt = Plotter()
 
     for method in methods:
@@ -84,7 +84,7 @@ if __name__ == "__main__":
         #     alg.ShowAlfa()
         #     print("Czas obliczeń : ",time.time()-start)
     
-    # plt.Plot(2)
+    plt.Plot(2)
 
         # solveTime=list(halfPop[:])
         # goalFunctions=list(halfPop[:])

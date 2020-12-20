@@ -15,35 +15,33 @@ class Plotter:
     def Clear(self):
         self.m_tplList = []
 
-    def Plot(self, cols=3):
+    def Plot(self, cols=3, size=1):
         rows = 1 if len(self.m_tplList)//cols < 1 else len(self.m_tplList)//cols
         plt.figure(figsize=(cols*3, rows*3))
-        i=1
-        for tpl in self.m_tplList:
-            plt.subplot(int(str(rows)+str(cols)+str(i)))
-            plt.plot(tpl[0], tpl[1], 'ro')
+        for i, tpl in enumerate(self.m_tplList):
+            plt.subplot(int(str(rows)+str(cols)+str(i+1)))
+            plt.plot(tpl[0], tpl[1], 'ro', markersize = size)
             plt.title(tpl[2])
-            i +=1
             plt.xlabel(str(tpl[3]))
             plt.ylabel(str(tpl[4]))
         plt.tight_layout()
         plt.show()
 
-    def PlotMultiple(self, title, *args):
+    def PlotMultiple(self, title, *args, size=1):
 
         plt.figure(figsize=(3, 3))
         plt.subplot(111)
         if len(args) == 2:
-            plt.plot(self.m_tplList[args[0]][0], self.m_tplList[args[0]][1], 'ro', self.m_tplList[args[1]][1], 'bo') 
+            plt.plot(self.m_tplList[args[0]][0], self.m_tplList[args[0]][1], 'ro', self.m_tplList[args[1]][1], 'bo', markersize = size) 
             plt.title(title)
             plt.xlabel(str(self.m_tplList[args[0]][3]))
         elif len(args) == 3:
-            plt.plot(self.m_tplList[args[0]][0], self.m_tplList[args[0]][1], 'ro', self.m_tplList[args[1]][1], 'bo', self.m_tplList[args[2]][1], 'go') 
+            plt.plot(self.m_tplList[args[0]][0], self.m_tplList[args[0]][1], 'ro', self.m_tplList[args[1]][1], 'bo', self.m_tplList[args[2]][1], 'go', markersize = size) 
             plt.title(title)
             plt.xlabel(str(self.m_tplList[args[0]][3]))
         elif len(args) == 4:
             plt.plot(self.m_tplList[args[0]][0], self.m_tplList[args[0]][1], 'ro', self.m_tplList[args[1]][1], 'bo', 
-            self.m_tplList[args[2]][1], 'go', self.m_tplList[args[3]][1], 'yo') 
+            self.m_tplList[args[2]][1], 'go', self.m_tplList[args[3]][1], 'yo', markersize = size) 
             plt.title(title)
             plt.xlabel(str(self.m_tplList[args[0]][3]))
         plt.show()
