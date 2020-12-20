@@ -27,7 +27,6 @@ if __name__ == "__main__":
         alg.ShowAlfa()
         print("Czas obliczeń : ",time.time()-start)
         
-        # for hp in halfPop:
     
     plt.Plot(2)
 
