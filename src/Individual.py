@@ -44,7 +44,7 @@ class Individual:
                         availibleAreas.append((currentLeftBorder,rightBorder))
                 currentLeftBorder=area[1]
             if area[1]>rightBorder:
-                break;
+                break
         if len(self.m_bannedAreas)==0:
             availibleAreas=[(leftBorder,rightBorder)]
         else:

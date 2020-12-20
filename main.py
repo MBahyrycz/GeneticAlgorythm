@@ -4,7 +4,8 @@ import time
 
 if __name__ == "__main__":
     methods=["RankSelection", "RankSelectionDependentOnIteration", "RouletteSelection", "TournamentSelection"]
-    iterCount = 100
+    iterCount = 1000
+    plt = Plotter()
     for method in methods:
         print()
         print('Metoda : ',method)
@@ -19,8 +20,8 @@ if __name__ == "__main__":
         alfaMaleData,bestIndividuals=alg.Solve(method)
         print(len(alfaMaleData))
 
-        plt = Plotter()
-        plt.DisplayGoalFunctionOfIteration(alfaMaleData, method)
+        
+        plt.AddValues(range(iterCount), alfaMaleData, method)
         
         # print("zbiernosici funkcji celu")
         # # print(alfaMaleData)#z tego ma byci wykres
@@ -37,25 +38,27 @@ if __name__ == "__main__":
         popular = [1.0, 2.0, 2.14, 3.6, 11.23, 23.51, 17.2, 12.3, 19.2, 7.7]
         popular.sort()
         
-        for m in mutate:
-            alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=1000,mutationProbability=m)
-            start=time.time()
-            alfaMaleData=alg.Solve(method)
-            print("Prawdopodobienistwo mutacji : ",m)
-            alg.ShowAlfa()
-            print("Czas obliczeń : ",time.time()-start)
+        # for m in mutate:
+        #     alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=1000,mutationProbability=m)
+        #     start=time.time()
+        #     alfaMaleData=alg.Solve(method)
+        #     print("Prawdopodobienistwo mutacji : ",m)
+        #     alg.ShowAlfa()
+        #     print("Czas obliczeń : ",time.time()-start)
             
-        #dla rurznych populationCount
-        halfPop=[1,2,5,10,20]#morzna zrobici wykres
+        # #dla rurznych populationCount
+        # halfPop=[1,2,5,10,20]#morzna zrobici wykres
         
-        popular = [1.0, 2.0, 2.14, 3.6, 11.23, 23.51, 17.2, 12.3, 19.2, 7.7]
-        popular.sort()
+        # popular = [1.0, 2.0, 2.14, 3.6, 11.23, 23.51, 17.2, 12.3, 19.2, 7.7]
+        # popular.sort()
         
-        for hp in halfPop:
-            alg = GeneticAlgorythm(hp, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=1000)
-            start=time.time()
-            alfaMaleData=alg.Solve(method)
-            print("Populacja : ",2*hp)
-            alg.ShowAlfa()
-            print("Czas obliczeń : ",time.time()-start)
+        # for hp in halfPop:
+        #     alg = GeneticAlgorythm(hp, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=1000)
+        #     start=time.time()
+        #     alfaMaleData=alg.Solve(method)
+        #     print("Populacja : ",2*hp)
+        #     alg.ShowAlfa()
+        #     print("Czas obliczeń : ",time.time()-start)
+    
+    plt.Plot(1)
     
