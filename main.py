@@ -20,91 +20,78 @@ if __name__ == "__main__":
         alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(15,19)],iterationCount=iterCount)
         start=time.time()
         alfaMaleData,bestIndividuals=alg.Solve(method)
-        #print(len(alfaMaleData))
 
         
         plt.AddValues(range(iterCount), alfaMaleData, method, "Numer iteracji", "Wartość funkcji celu")
         
-        # print("zbiernosici funkcji celu")
-        # # print(alfaMaleData)#z tego ma byci wykres
-        # print("najlepsze osobniki")
-        # print(bestIndividuals)#z tego tesz
-        
         alg.ShowAlfa()
         print("Czas obliczeń : ",time.time()-start)
         
-        repeats=10
-        
-        #dla rurznych mutate
-        mutate=(np.linspace(0.0,1.0,num=20)).tolist()
-        
-        popular = [1.0, 2.0, 2.14, 3.6, 11.23, 23.51, 17.2, 12.3, 19.2, 7.7]
-        popular.sort()
-        
-        # for m in mutate:
-        #     alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=1000,mutationProbability=m)
-        #     start=time.time()
-        #     alfaMaleData=alg.Solve(method)
-        #     print("Prawdopodobienistwo mutacji : ",m)
-        #     alg.ShowAlfa()
-        #     print("Czas obliczeń : ",time.time()-start)
-            
-        # #dla rurznych populationCount
-        # halfPop=[1,2,5,10,20]#morzna zrobici wykres
-
-        # solveTime=mutate[:]
-        # goalFunctions=mutate[:]
-        
-        # for index,m in enumerate(mutate):
-        #     solveTime[index]=0
-        #     goalFunctions[index]=0
-        #     for i in range(repeats):
-        #         alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=100,mutationProbability=m)
-        #         start=time.time()
-        #         alg.Solve(method)
-        #         solveTime[index]+=time.time()-start
-        #         goalFunctions[index]+=alg.m_AlfaMale.m_Quality
-        #     solveTime[index]/=repeats
-        #     goalFunctions[index]/=repeats
-            
-        # plt.TimePlot(solveTime,mutate,'Prawdopodobieństwo mutacji',method)
-        # plt.GoalFunctionOfValues(goalFunctions,mutate,'Prawdopodobieństwo mutacji',method)
-        
-        #dla rurznych populationCount
-        # halfPop=range(1,30)
-        
-        # popular = [1.0, 2.0, 2.14, 3.6, 11.23, 23.51, 17.2, 12.3, 19.2, 7.7]
-        # popular.sort()
-        
-        # for hp in halfPop:
-        #     alg = GeneticAlgorythm(hp, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=1000)
-        #     start=time.time()
-        #     alfaMaleData=alg.Solve(method)
-        #     print("Populacja : ",2*hp)
-        #     alg.ShowAlfa()
-        #     print("Czas obliczeń : ",time.time()-start)
     
-    # plt.Plot(2)
-
-        # solveTime=list(halfPop[:])
-        # goalFunctions=list(halfPop[:])
+    plt.Plot(2)
         
-        # for index,hp in enumerate(halfPop):
-        #     solveTime[index]=0
-        #     goalFunctions[index]=0
-        #     for i in range(repeats):
-        #         alg = GeneticAlgorythm(hp, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=100)
-        #         start=time.time()
-        #         alg.Solve(method)
-        #         solveTime[index]+=time.time()-start
-        #         goalFunctions[index]+=alg.m_AlfaMale.m_Quality
-        #     solveTime[index]/=repeats
-        #     goalFunctions[index]/=repeats
-            
-        # plt.TimePlot(solveTime,2*np.array(halfPop),'Populacja',method)
-        # plt.GoalFunctionOfValues(goalFunctions,2*np.array(halfPop),'Populacja',method)
+    iterCount=100
+    repeats=10
+    popular = [1.0, 2.0, 2.14, 3.6, 11.23, 23.51, 17.2, 12.3, 19.2, 7.7]
+    popular.sort()
+    
+    #dla rurznych mutate 
+    pltMutateTime=Plotter()
+    pltMutateGF=Plotter()
+    mutate=(np.linspace(0.0,1.0,num=20)).tolist()
+    for method in methods:
+        print()
+        print('Metoda : ',method)
+        print()
         
+        solveTime=mutate[:]
+        goalFunctions=mutate[:]
         
-            
+        for index,m in enumerate(mutate):
+            solveTime[index]=0
+            goalFunctions[index]=0
+            for i in range(repeats):
+                alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=100,mutationProbability=m)
+                start=time.time()
+                alg.Solve(method)
+                solveTime[index]+=time.time()-start
+                goalFunctions[index]+=alg.m_AlfaMale.m_Quality
+            solveTime[index]/=repeats
+            goalFunctions[index]/=repeats
         
+        pltMutateTime.AddValues(mutate,solveTime,method,'Prawdopodobieństwo mutacji','Czas obliczeń')
+        pltMutateGF.AddValues(mutate,goalFunctions,method,'Prawdopodobieństwo mutacji','Funkcja celu')
+    
+    pltMutateTime.Plot(2)
+    pltMutateGF.Plot(2)
+    
+    #dla rurznych populationCount
+    halfPop=range(1,30)
+    pltPopTime=Plotter()
+    pltPopGF=Plotter()
+    for method in methods:
+        print()
+        print('Metoda : ',method)
+        print()
+        
+        solveTime=list(halfPop[:])
+        goalFunctions=list(halfPop[:])
+        
+        for index,hp in enumerate(halfPop):
+            solveTime[index]=0
+            goalFunctions[index]=0
+            for i in range(repeats):
+                alg = GeneticAlgorythm(hp, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=100)
+                start=time.time()
+                alg.Solve(method)
+                solveTime[index]+=time.time()-start
+                goalFunctions[index]+=alg.m_AlfaMale.m_Quality
+            solveTime[index]/=repeats
+            goalFunctions[index]/=repeats
+         
+        pltPopTime.AddValues(2*np.array(halfPop),solveTime,method,'Populacja','Czas obliczeń')
+        pltPopGF.AddValues(2*np.array(halfPop),goalFunctions,method,'Populacja','Funkcja celu')
+    
+    pltPopTime.Plot(2)
+    pltPopGF.Plot(2)
     
