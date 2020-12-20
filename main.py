@@ -23,7 +23,7 @@ if __name__ == "__main__":
         #print(len(alfaMaleData))
 
         
-        plt.AddValues(range(iterCount), alfaMaleData, method)
+        plt.AddValues(range(iterCount), alfaMaleData, method, "Numer iteracji", "Wartość funkcji celu")
         
         # print("zbiernosici funkcji celu")
         # # print(alfaMaleData)#z tego ma byci wykres
@@ -71,7 +71,7 @@ if __name__ == "__main__":
         # plt.GoalFunctionOfValues(goalFunctions,mutate,'Prawdopodobieństwo mutacji',method)
         
         #dla rurznych populationCount
-        halfPop=range(1,30)
+        # halfPop=range(1,30)
         
         # popular = [1.0, 2.0, 2.14, 3.6, 11.23, 23.51, 17.2, 12.3, 19.2, 7.7]
         # popular.sort()
@@ -84,7 +84,7 @@ if __name__ == "__main__":
         #     alg.ShowAlfa()
         #     print("Czas obliczeń : ",time.time()-start)
     
-    plt.Plot(3)
+    plt.Plot(2)
 
         # solveTime=list(halfPop[:])
         # goalFunctions=list(halfPop[:])

@@ -9,8 +9,8 @@ class Plotter:
     def __init__(self):
         self.m_tplList = []
     
-    def AddValues(self, x, y, title):
-        self.m_tplList.append((x, y, title))
+    def AddValues(self, x, y, title, xlabel="x", ylabel="y"):
+        self.m_tplList.append((x, y, title, xlabel, ylabel))
 
     def Clear(self):
         self.m_tplList = []
@@ -24,6 +24,8 @@ class Plotter:
             plt.plot(tpl[0], tpl[1], 'ro')
             plt.title(tpl[2])
             i +=1
+            plt.xlabel(str(tpl[3]))
+            plt.ylabel(str(tpl[4]))
         plt.tight_layout()
         plt.show()
 
