@@ -84,7 +84,7 @@ if __name__ == "__main__":
         #     alg.ShowAlfa()
         #     print("Czas obliczeń : ",time.time()-start)
     
-    plt.Plot(2)
+    # plt.Plot(2)
 
         # solveTime=list(halfPop[:])
         # goalFunctions=list(halfPop[:])

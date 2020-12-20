@@ -29,8 +29,25 @@ class Plotter:
         plt.tight_layout()
         plt.show()
 
-    def PlotMultiple(self, *args):
-        pass
+    def PlotMultiple(self, title, *args):
+
+        plt.figure(figsize=(3, 3))
+        plt.subplot(111)
+        if len(args) == 2:
+            plt.plot(self.m_tplList[args[0]][0], self.m_tplList[args[0]][1], 'ro', self.m_tplList[args[1]][1], 'bo') 
+            plt.title(title)
+            plt.xlabel(str(self.m_tplList[args[0]][3]))
+        elif len(args) == 3:
+            plt.plot(self.m_tplList[args[0]][0], self.m_tplList[args[0]][1], 'ro', self.m_tplList[args[1]][1], 'bo', self.m_tplList[args[2]][1], 'go') 
+            plt.title(title)
+            plt.xlabel(str(self.m_tplList[args[0]][3]))
+        elif len(args) == 4:
+            plt.plot(self.m_tplList[args[0]][0], self.m_tplList[args[0]][1], 'ro', self.m_tplList[args[1]][1], 'bo', 
+            self.m_tplList[args[2]][1], 'go', self.m_tplList[args[3]][1], 'yo') 
+            plt.title(title)
+            plt.xlabel(str(self.m_tplList[args[0]][3]))
+        plt.show()
+
 
 
 # pltt = Plotter()
