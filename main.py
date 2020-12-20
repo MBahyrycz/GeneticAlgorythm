@@ -7,6 +7,7 @@ if __name__ == "__main__":
     methods=["RankSelection", "RankSelectionDependentOnIteration", "RouletteSelection", "TournamentSelection"]
     iterCount = 1000
     plt = Plotter()
+
     for method in methods:
         print()
         print('Metoda : ',method)
@@ -50,23 +51,24 @@ if __name__ == "__main__":
             
         # #dla rurznych populationCount
         # halfPop=[1,2,5,10,20]#morzna zrobici wykres
-        solveTime=mutate[:]
-        goalFunctions=mutate[:]
+
+        # solveTime=mutate[:]
+        # goalFunctions=mutate[:]
         
-        for index,m in enumerate(mutate):
-            solveTime[index]=0
-            goalFunctions[index]=0
-            for i in range(repeats):
-                alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=100,mutationProbability=m)
-                start=time.time()
-                alg.Solve(method)
-                solveTime[index]+=time.time()-start
-                goalFunctions[index]+=alg.m_AlfaMale.m_Quality
-            solveTime[index]/=repeats
-            goalFunctions[index]/=repeats
+        # for index,m in enumerate(mutate):
+        #     solveTime[index]=0
+        #     goalFunctions[index]=0
+        #     for i in range(repeats):
+        #         alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=100,mutationProbability=m)
+        #         start=time.time()
+        #         alg.Solve(method)
+        #         solveTime[index]+=time.time()-start
+        #         goalFunctions[index]+=alg.m_AlfaMale.m_Quality
+        #     solveTime[index]/=repeats
+        #     goalFunctions[index]/=repeats
             
-        plt.TimePlot(solveTime,mutate,'Prawdopodobieństwo mutacji',method)
-        plt.GoalFunctionOfValues(goalFunctions,mutate,'Prawdopodobieństwo mutacji',method)
+        # plt.TimePlot(solveTime,mutate,'Prawdopodobieństwo mutacji',method)
+        # plt.GoalFunctionOfValues(goalFunctions,mutate,'Prawdopodobieństwo mutacji',method)
         
         #dla rurznych populationCount
         halfPop=range(1,30)
@@ -82,24 +84,25 @@ if __name__ == "__main__":
         #     alg.ShowAlfa()
         #     print("Czas obliczeń : ",time.time()-start)
     
-    plt.Plot(1)
-        solveTime=list(halfPop[:])
-        goalFunctions=list(halfPop[:])
+    plt.Plot(3)
+
+        # solveTime=list(halfPop[:])
+        # goalFunctions=list(halfPop[:])
         
-        for index,hp in enumerate(halfPop):
-            solveTime[index]=0
-            goalFunctions[index]=0
-            for i in range(repeats):
-                alg = GeneticAlgorythm(hp, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=100)
-                start=time.time()
-                alg.Solve(method)
-                solveTime[index]+=time.time()-start
-                goalFunctions[index]+=alg.m_AlfaMale.m_Quality
-            solveTime[index]/=repeats
-            goalFunctions[index]/=repeats
+        # for index,hp in enumerate(halfPop):
+        #     solveTime[index]=0
+        #     goalFunctions[index]=0
+        #     for i in range(repeats):
+        #         alg = GeneticAlgorythm(hp, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=100)
+        #         start=time.time()
+        #         alg.Solve(method)
+        #         solveTime[index]+=time.time()-start
+        #         goalFunctions[index]+=alg.m_AlfaMale.m_Quality
+        #     solveTime[index]/=repeats
+        #     goalFunctions[index]/=repeats
             
-        plt.TimePlot(solveTime,2*np.array(halfPop),'Populacja',method)
-        plt.GoalFunctionOfValues(goalFunctions,2*np.array(halfPop),'Populacja',method)
+        # plt.TimePlot(solveTime,2*np.array(halfPop),'Populacja',method)
+        # plt.GoalFunctionOfValues(goalFunctions,2*np.array(halfPop),'Populacja',method)
         
         
             
