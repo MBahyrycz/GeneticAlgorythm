@@ -46,6 +46,15 @@ class Plotter:
             plt.xlabel(str(self.m_tplList[args[0]][3]))
         plt.show()
 
+    def AddPlots(self, *args):
+        for dataList in args:
+            for data in dataList:
+                self.m_tplList.append(data)
+
+    def GetTuples(self):
+        return self.m_tplList
+
+
 
 
 # pltt = Plotter()

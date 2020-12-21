@@ -32,6 +32,7 @@ class GeneticAlgorythm:
         endCondition = 0
         alfaMaleData=[]
         bestIndividuals=[]
+        mean=[]
         while(endCondition<self.m_IterationCount):
             self.CalculateQuality()
             if method=="RankSelection":
@@ -48,8 +49,9 @@ class GeneticAlgorythm:
             self.Mutate()
             # self.PrintPopulation()
             alfaMaleData.append(self.m_AlfaMale.m_Quality)
+            mean.append(self.GetGoalFunctionMean())
             endCondition+= 1
-        return alfaMaleData,bestIndividuals
+        return alfaMaleData,bestIndividuals, mean
 
     def CalculateQuality(self):
         for i in range(self.m_PopulationCount):
@@ -160,3 +162,10 @@ class GeneticAlgorythm:
     def Mutate(self):
         for i in range(self.m_PopulationCount):
             self.m_Population[i].Mutate()
+
+    def GetGoalFunctionMean(self):
+        gfList = []
+        for individual in self.m_Population:
+            if individual.m_Quality != math.inf:
+                gfList.append(individual.m_Quality)
+        return sum(gfList)/len(gfList) if len(gfList) != 0 else math.inf
