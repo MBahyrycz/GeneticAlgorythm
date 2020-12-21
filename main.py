@@ -10,6 +10,7 @@ if __name__ == "__main__":
     meanPlt = Plotter()
     crossOverPlt = Plotter()
     mutatePlt = Plotter()
+    bestIndividualsPlt = Plotter()
 
     for method in methods:
         print()
@@ -29,15 +30,17 @@ if __name__ == "__main__":
         meanPlt.AddValues(range(iterCount), mean, method, "Numer iteracji", "Średnia wartość funkcji celu")
         crossOverPlt.AddValues(range(iterCount), crossOverTime, method, "Numer iteracji", "Czas krzyżowania")
         mutatePlt.AddValues(range(iterCount), mutateTime, method, "Numer iteracji", "Czas mutacji")
+        bestIndividualsPlt.AddValues(range(iterCount), bestIndividuals, method, "Numer iteracji", "Wartość funkcji celu")
         
         alg.ShowAlfa()
         print("Czas obliczeń : ",time.time()-start)
+        print("Średni czas mutacji : ", sum(mutateTime)/len(mutateTime))
+        print("Średni czas krzyżowania : ", sum(crossOverTime)/len(crossOverTime))
         
     plt.AddPlots(meanPlt.GetTuples())
     plt.Plot(4)
 
-    crossOverPlt.AddPlots(mutatePlt.GetTuples())
-    crossOverPlt.Plot(4)
+    bestIndividualsPlt.Plot(2)
 
         # solveTime=list(halfPop[:])
         # goalFunctions=list(halfPop[:])
