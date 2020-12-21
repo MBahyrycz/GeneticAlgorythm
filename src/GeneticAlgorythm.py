@@ -1,5 +1,6 @@
 from src.Individual import *
 import random
+import time
 
 class GeneticAlgorythm:
     def __init__(self, halfPopulationCount, roadLength, stopsCount, popularPlaces, mutationProbability = 0.05, iterationCount=10000,minStopsDistance=3,maxStopsDistance=7,bannedAreas=[]):
@@ -33,6 +34,8 @@ class GeneticAlgorythm:
         alfaMaleData=[]
         bestIndividuals=[]
         mean=[]
+        crossOverTime=[]
+        mutateTime=[]
         while(endCondition<self.m_IterationCount):
             self.CalculateQuality()
             if method=="RankSelection":
@@ -45,13 +48,17 @@ class GeneticAlgorythm:
                 self.TournamentSelection()
             # self.PrintPopulation()
             bestIndividuals.append(self.m_Population[0].m_Quality)
+            startCrossOver = time.time()
             self.CrossOver()
+            crossOverTime.append(time.time() - startCrossOver)
+            startMutate = time.time()
             self.Mutate()
+            mutateTime.append(time.time()-startMutate)
             # self.PrintPopulation()
             alfaMaleData.append(self.m_AlfaMale.m_Quality)
             mean.append(self.GetGoalFunctionMean())
             endCondition+= 1
-        return alfaMaleData,bestIndividuals, mean
+        return alfaMaleData,bestIndividuals, mean, crossOverTime, mutateTime
 
     def CalculateQuality(self):
         for i in range(self.m_PopulationCount):

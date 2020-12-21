@@ -8,6 +8,8 @@ if __name__ == "__main__":
     iterCount = 1000
     plt = Plotter()
     meanPlt = Plotter()
+    crossOverPlt = Plotter()
+    mutatePlt = Plotter()
 
     for method in methods:
         print()
@@ -20,17 +22,22 @@ if __name__ == "__main__":
         popular.sort()
         alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(15,19)],iterationCount=iterCount)
         start=time.time()
-        alfaMaleData,bestIndividuals, mean=alg.Solve(method)
+        alfaMaleData, bestIndividuals, mean, crossOverTime, mutateTime = alg.Solve(method)
 
         
         plt.AddValues(range(iterCount), alfaMaleData, method, "Numer iteracji", "Wartość funkcji celu")
         meanPlt.AddValues(range(iterCount), mean, method, "Numer iteracji", "Średnia wartość funkcji celu")
+        crossOverPlt.AddValues(range(iterCount), crossOverTime, method, "Numer iteracji", "Czas krzyżowania")
+        mutatePlt.AddValues(range(iterCount), mutateTime, method, "Numer iteracji", "Czas mutacji")
         
         alg.ShowAlfa()
         print("Czas obliczeń : ",time.time()-start)
         
     plt.AddPlots(meanPlt.GetTuples())
     plt.Plot(4)
+
+    crossOverPlt.AddPlots(mutatePlt.GetTuples())
+    crossOverPlt.Plot(4)
 
         # solveTime=list(halfPop[:])
         # goalFunctions=list(halfPop[:])
