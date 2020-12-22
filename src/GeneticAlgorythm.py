@@ -36,6 +36,8 @@ class GeneticAlgorythm:
         mean=[]
         crossOverTime=[]
         mutateTime=[]
+        crossOverChanges=[]
+        mutateChanges=[]
         while(endCondition<self.m_IterationCount):
             self.CalculateQuality()
             if method=="RankSelection":
@@ -51,14 +53,20 @@ class GeneticAlgorythm:
             startCrossOver = time.time()
             self.CrossOver()
             crossOverTime.append(time.time() - startCrossOver)
+            self.CalculateQuality()
+            maxGFc=min(self.m_Population,key=lambda x:x.m_Quality).m_Quality
+            crossOverChanges.append(maxGFc-bestIndividuals[-1])
             startMutate = time.time()
             self.Mutate()
             mutateTime.append(time.time()-startMutate)
+            self.CalculateQuality()
+            maxGFm=min(self.m_Population,key=lambda x:x.m_Quality).m_Quality
+            mutateChanges.append(maxGFm-bestIndividuals[-1]-crossOverChanges[-1])
             # self.PrintPopulation()
             alfaMaleData.append(self.m_AlfaMale.m_Quality)
             mean.append(self.GetGoalFunctionMean())
             endCondition+= 1
-        return alfaMaleData,bestIndividuals, mean, crossOverTime, mutateTime
+        return alfaMaleData,bestIndividuals, mean, crossOverTime, mutateTime,crossOverChanges,mutateChanges
 
     def CalculateQuality(self):
         for i in range(self.m_PopulationCount):

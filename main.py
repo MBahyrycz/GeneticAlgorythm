@@ -11,7 +11,8 @@ if __name__ == "__main__":
     crossOverPlt = Plotter()
     mutatePlt = Plotter()
     bestIndividualsPlt = Plotter()
-
+    crossPlot=Plotter()
+    mutatePlot=Plotter()
     for method in methods:
         print()
         print('Metoda : ',method)
@@ -23,26 +24,40 @@ if __name__ == "__main__":
         popular.sort()
         alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(15,19)],iterationCount=iterCount)
         start=time.time()
-        alfaMaleData, bestIndividuals, mean, crossOverTime, mutateTime = alg.Solve(method)
-
+        alfaMaleData, bestIndividuals, mean, crossOverTime, mutateTime ,crossOverChanges ,mutateChanges= alg.Solve(method)
         
         plt.AddValues(range(iterCount), alfaMaleData, method, "Numer iteracji", "Wartość funkcji celu")
         meanPlt.AddValues(range(iterCount), mean, method, "Numer iteracji", "Średnia wartość funkcji celu")
         crossOverPlt.AddValues(range(iterCount), crossOverTime, method, "Numer iteracji", "Czas krzyżowania")
         mutatePlt.AddValues(range(iterCount), mutateTime, method, "Numer iteracji", "Czas mutacji")
         bestIndividualsPlt.AddValues(range(iterCount), bestIndividuals, method, "Numer iteracji", "Wartość funkcji celu")
+        crossPlot.AddValues(range(iterCount), crossOverChanges, method, "Numer iteracji", "Zmiany podczas krzyżowania")
+        mutatePlot.AddValues(range(iterCount), mutateChanges, method, "Numer iteracji", "Zmiany podczas mutacji")
+        
+        crossUpgradeIndexes=[]
+        for i,ch in enumerate(crossOverChanges):
+            if ch<0:
+                crossUpgradeIndexes.append(i)
+        print("Ilosić popraw przy krzyżowaniu : ",len(crossUpgradeIndexes))#,"w iteracjach : ",crossUpgradeIndexes)
+        
+        mutateUpgradeIndexes=[]
+        for i,ch in enumerate(mutateChanges):
+            if ch<0:
+                mutateUpgradeIndexes.append(i)
+        print("Ilosić popraw przy mutacji : ",len(mutateUpgradeIndexes),"w iteracjach : ",mutateUpgradeIndexes)
         
         alg.ShowAlfa()
         print("Czas obliczeń : ",time.time()-start)
         print("Średni czas mutacji : ", sum(mutateTime)/len(mutateTime))
         print("Średni czas krzyżowania : ", sum(crossOverTime)/len(crossOverTime))
         
-    plt.AddPlots(meanPlt.GetTuples())
+    plt.AddPlots(bestIndividualsPlt.GetTuples())
     plt.Plot(4)
+    
+    crossPlot.AddPlots(mutatePlot.GetTuples())
+    crossPlot.Plot(4)
 
-    bestIndividualsPlt.Plot(2)
-
-        
+    meanPlt.Plot(2)        
     
     
     
