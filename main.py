@@ -73,6 +73,93 @@ if __name__ == "__main__":
     popular = [1.0, 2.0, 2.14, 3.6, 11.23, 23.51, 17.2, 12.3, 19.2, 7.7]
     popular.sort()
     
+    # dla rurznych mutate metoda move
+    pltMutateTime=Plotter()
+    pltMutateGF=Plotter()
+    mutate=(np.linspace(0.0,1.0,num=20)).tolist()
+    for method in methods:
+        print()
+        print('Metoda : ',method)
+        print()
+        
+        solveTime=mutate[:]
+        goalFunctions=mutate[:]
+        
+        for index,m in enumerate(mutate):
+            solveTime[index]=0
+            goalFunctions[index]=0
+            for i in range(repeats):
+                alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=iterCount,mutationProbability=m,mutationMethod='m')
+                start=time.time()
+                alg.Solve(method)
+                solveTime[index]+=time.time()-start
+                goalFunctions[index]+=alg.m_AlfaMale.m_Quality
+            solveTime[index]/=repeats
+            goalFunctions[index]/=repeats
+        
+        pltMutateTime.AddValues(mutate,solveTime,method,'Prawdopodobieństwo mutacji','Czas obliczeń')
+        pltMutateGF.AddValues(mutate,goalFunctions,method,'Prawdopodobieństwo mutacji','Funkcja celu')
+    pltMutateTime.AddPlots(pltMutateGF.GetTuples())
+    pltMutateTime.Plot(4)
+    
+    # dla rurznych mutate metoda round
+    pltMutateTime=Plotter()
+    pltMutateGF=Plotter()
+    mutate=(np.linspace(0.0,1.0,num=20)).tolist()
+    for method in methods:
+        print()
+        print('Metoda : ',method)
+        print()
+        
+        solveTime=mutate[:]
+        goalFunctions=mutate[:]
+        
+        for index,m in enumerate(mutate):
+            solveTime[index]=0
+            goalFunctions[index]=0
+            for i in range(repeats):
+                alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=iterCount,mutationProbability=m,mutationMethod='r')
+                start=time.time()
+                alg.Solve(method)
+                solveTime[index]+=time.time()-start
+                goalFunctions[index]+=alg.m_AlfaMale.m_Quality
+            solveTime[index]/=repeats
+            goalFunctions[index]/=repeats
+        
+        pltMutateTime.AddValues(mutate,solveTime,method,'Prawdopodobieństwo mutacji','Czas obliczeń')
+        pltMutateGF.AddValues(mutate,goalFunctions,method,'Prawdopodobieństwo mutacji','Funkcja celu')
+    pltMutateTime.AddPlots(pltMutateGF.GetTuples())
+    pltMutateTime.Plot(4)
+    
+    # dla rurznych mutate metoda move/round
+    pltMutateTime=Plotter()
+    pltMutateGF=Plotter()
+    mutate=(np.linspace(0.0,1.0,num=20)).tolist()
+    for method in methods:
+        print()
+        print('Metoda : ',method)
+        print()
+        
+        solveTime=mutate[:]
+        goalFunctions=mutate[:]
+        
+        for index,m in enumerate(mutate):
+            solveTime[index]=0
+            goalFunctions[index]=0
+            for i in range(repeats):
+                alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=iterCount,mutationProbability=m,mutationMethod='mr')
+                start=time.time()
+                alg.Solve(method)
+                solveTime[index]+=time.time()-start
+                goalFunctions[index]+=alg.m_AlfaMale.m_Quality
+            solveTime[index]/=repeats
+            goalFunctions[index]/=repeats
+        
+        pltMutateTime.AddValues(mutate,solveTime,method,'Prawdopodobieństwo mutacji','Czas obliczeń')
+        pltMutateGF.AddValues(mutate,goalFunctions,method,'Prawdopodobieństwo mutacji','Funkcja celu')
+    pltMutateTime.AddPlots(pltMutateGF.GetTuples())
+    pltMutateTime.Plot(4)
+    
     # dla rurznych banned
     pltBannedTime=Plotter()
     bannedCount=list(range(2,30))
@@ -148,35 +235,6 @@ if __name__ == "__main__":
         pltStopsGF.AddValues(stopCounts,goalFunctions,method,'Liczba przystanków','Funkcja celu')
     pltStopsTime.AddPlots(pltStopsGF.GetTuples())
     pltStopsTime.Plot(4)
-    
-    # dla rurznych mutate 
-    pltMutateTime=Plotter()
-    pltMutateGF=Plotter()
-    mutate=(np.linspace(0.0,1.0,num=20)).tolist()
-    for method in methods:
-        print()
-        print('Metoda : ',method)
-        print()
-        
-        solveTime=mutate[:]
-        goalFunctions=mutate[:]
-        
-        for index,m in enumerate(mutate):
-            solveTime[index]=0
-            goalFunctions[index]=0
-            for i in range(repeats):
-                alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(17,20)],iterationCount=iterCount,mutationProbability=m)
-                start=time.time()
-                alg.Solve(method)
-                solveTime[index]+=time.time()-start
-                goalFunctions[index]+=alg.m_AlfaMale.m_Quality
-            solveTime[index]/=repeats
-            goalFunctions[index]/=repeats
-        
-        pltMutateTime.AddValues(mutate,solveTime,method,'Prawdopodobieństwo mutacji','Czas obliczeń')
-        pltMutateGF.AddValues(mutate,goalFunctions,method,'Prawdopodobieństwo mutacji','Funkcja celu')
-    pltMutateTime.AddPlots(pltMutateGF.GetTuples())
-    pltMutateTime.Plot(4)
     
     # dla rurznych populationCount
     halfPop=range(1,30)

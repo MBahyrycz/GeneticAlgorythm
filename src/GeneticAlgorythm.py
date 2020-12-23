@@ -3,7 +3,7 @@ import random
 import time
 
 class GeneticAlgorythm:
-    def __init__(self, halfPopulationCount, roadLength, stopsCount, popularPlaces, mutationProbability = 0.05, iterationCount=10000,minStopsDistance=3,maxStopsDistance=7,bannedAreas=[]):
+    def __init__(self, halfPopulationCount, roadLength, stopsCount, popularPlaces, mutationProbability = 0.05,mutationMethod='mr', iterationCount=10000,minStopsDistance=3,maxStopsDistance=7,bannedAreas=[]):
         self.m_PopulationCount = 2 * halfPopulationCount
         self.m_RoadLength = roadLength
         self.m_StopsCount = stopsCount
@@ -11,6 +11,7 @@ class GeneticAlgorythm:
         self.m_Population = []
         self.m_IterationCount = iterationCount
         self.m_MutationProbability = mutationProbability
+        self.m_MutationMethod = mutationMethod
         self.m_MinStopsDistance=minStopsDistance
         self.m_MaxStopsDistance=maxStopsDistance
         self.m_bannedAreas=bannedAreas
@@ -186,7 +187,15 @@ class GeneticAlgorythm:
 
     def Mutate(self):
         for i in range(self.m_PopulationCount):
-            self.m_Population[i].Mutate()
+            if self.m_MutationMethod=='m':
+                self.m_Population[i].MutateRandom()
+            elif self.m_MutationMethod=='r':
+                self.m_Population[i].MutateRound(self.m_PopularPlaces)
+            elif self.m_MutationMethod=='mr':
+                self.m_Population[i].MutateRandom()
+                self.m_Population[i].MutateRound(self.m_PopularPlaces)
+            else:
+                raise ValueError("Unknown mutation method")
 
     def GetGoalFunctionMean(self):
         gfList = []

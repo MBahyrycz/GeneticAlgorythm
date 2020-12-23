@@ -82,11 +82,36 @@ class Individual:
             rightBorder=min(self.m_Chromosome[index-1]+self.m_maxStopsDistance,self.m_Chromosome[index+1]-self.m_minStopsDistance)
         return leftBorder,rightBorder
     
-    def Mutate(self):
+    def MutateRandom(self):
         if random.random() < self.m_MutationProbability:
             index = random.randint(0,self.m_StopsCount - 1)
             leftBorder,rightBorder=self.StopsBorders(index)
             self.PlaceInBorders(index,leftBorder,rightBorder)
+            
+    def MutateRound(self,popularPlaces):
+        if random.random() < self.m_MutationProbability:
+            index = random.randint(0,self.m_StopsCount - 1)
+            pos=self.m_Chromosome[index]
+            leftBorder,rightBorder=self.StopsBorders(index)
+            closest=self.m_RoadLength+pos
+            for p in popularPlaces:
+                if abs(closest-pos)>abs(p-pos):
+                    closest=p
+                if p>pos:
+                    break
+            for ar in self.m_bannedAreas:
+                if abs(closest-pos)>abs(ar[0]-pos):
+                    closest=ar[0]
+                if abs(closest-pos)>abs(ar[1]-pos):
+                    closest=ar[1]
+                if ar[1]>pos:
+                    break
+            if abs(closest-pos)>abs(leftBorder-pos):
+                closest=leftBorder
+            if abs(closest-pos)>abs(rightBorder-pos):
+                closest=rightBorder
+            self.m_Chromosome[index]=closest
+            #print(closest)
     
     def Repair(self):
         for i in range(self.m_StopsCount):
