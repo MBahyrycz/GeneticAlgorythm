@@ -24,7 +24,7 @@ if __name__ == "__main__":
         popular.sort()
         alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(15,19)],iterationCount=iterCount)
         start=time.time()
-        alfaMaleData, bestIndividuals, mean, crossOverTime, mutateTime ,crossOverChanges ,mutateChanges= alg.Solve(method)
+        alfaMaleData, bestIndividuals, mean, crossOverTime, mutateTime ,crossOverChanges ,mutateChanges,crossOverUpgrades,mutateUpgrades= alg.Solve(method)
         
         plt.AddValues(range(iterCount), alfaMaleData, method, "Numer iteracji", "Wartość funkcji celu")
         meanPlt.AddValues(range(iterCount), mean, method, "Numer iteracji", "Średnia wartość funkcji celu")
@@ -46,6 +46,13 @@ if __name__ == "__main__":
                 mutateUpgradeIndexes.append(i)
         print("Ilosić popraw przy mutacji : ",len(mutateUpgradeIndexes),"w iteracjach : ",mutateUpgradeIndexes)
         
+        print("Poprawy samca alfa : ")
+        
+        print("Ilosić popraw przy krzyżowaniu : ",len(crossOverUpgrades),"w iteracjach : ",crossOverUpgrades)
+        
+        print("Ilosić popraw przy mutacji : ",len(mutateUpgrades),"w iteracjach : ",mutateUpgrades)
+        
+        print()
         alg.ShowAlfa()
         print("Czas obliczeń : ",time.time()-start)
         print("Średni czas mutacji : ", sum(mutateTime)/len(mutateTime))
