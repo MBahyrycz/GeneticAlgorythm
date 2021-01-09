@@ -19,18 +19,18 @@ if __name__ == "__main__":
         print()
         #zbierznosici funkcji celu i najlepsze osobniki
         
-        #popular = [1.0, 2.0, 2.14, 3.6, 11.23, 23.51, 17.2, 12.3, 19.2, 7.7]
-        popular=[3,11,15,23]
+        popular = [1.0, 2.0, 2.14, 3.6, 11.23, 23.51, 17.2, 12.3, 19.2, 7.7, 21.3, 32.7,29.9, 30.5, 35.4]
+        # popular=[3,11,15,23,27,33,41,49,56,59,70,90]
         popular.sort()
-        alg = GeneticAlgorythm(20, 24, 4, popular,bannedAreas=[(1,4),(15,19)],iterationCount=iterCount)
+        alg = GeneticAlgorythm(20, 40, 6, popular,bannedAreas=[(1,4),(15,19)],iterationCount=iterCount)
         start=time.time()
         alfaMaleData, bestIndividuals, mean, crossOverTime, mutateTime ,crossOverChanges ,mutateChanges,crossOverUpgrades,mutateUpgrades= alg.Solve(method)
         
-        plt.AddValues(range(iterCount), alfaMaleData, method, "Numer iteracji", "Wartość funkcji celu")
+        plt.AddValues(range(iterCount), alfaMaleData, method, "Numer iteracji", "Wartość funkcji celu najlepszego osobnika")
         meanPlt.AddValues(range(iterCount), mean, method, "Numer iteracji", "Średnia wartość funkcji celu")
         crossOverPlt.AddValues(range(iterCount), crossOverTime, method, "Numer iteracji", "Czas krzyżowania")
         mutatePlt.AddValues(range(iterCount), mutateTime, method, "Numer iteracji", "Czas mutacji")
-        bestIndividualsPlt.AddValues(range(iterCount), bestIndividuals, method, "Numer iteracji", "Wartość funkcji celu")
+        bestIndividualsPlt.AddValues(range(iterCount), bestIndividuals, method, "Numer iteracji", "Wartość największej funkcji celu")
         crossPlot.AddValues(range(iterCount), crossOverChanges, method, "Numer iteracji", "Zmiany podczas krzyżowania")
         mutatePlot.AddValues(range(iterCount), mutateChanges, method, "Numer iteracji", "Zmiany podczas mutacji")
         

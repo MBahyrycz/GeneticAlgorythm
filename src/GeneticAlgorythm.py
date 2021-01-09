@@ -3,7 +3,7 @@ import random
 import time
 
 class GeneticAlgorythm:
-    def __init__(self, halfPopulationCount, roadLength, stopsCount, popularPlaces, mutationProbability = 0.05,mutationMethod='mr', iterationCount=10000,minStopsDistance=3,maxStopsDistance=7,bannedAreas=[]):
+    def __init__(self, halfPopulationCount, roadLength, stopsCount, popularPlaces, mutationProbability = 0.05,mutationMethod='mr', iterationCount=10000,minStopsDistance=2,maxStopsDistance=8,bannedAreas=[]):
         self.m_PopulationCount = 2 * halfPopulationCount
         self.m_RoadLength = roadLength
         self.m_StopsCount = stopsCount
